@@ -5,7 +5,6 @@ import {QueryClient, QueryClientProvider} from "react-query";
 import {Login} from "./pages/Login";
 import {Main} from "./pages/Main";
 import {Registration} from "./pages/Registration";
-import {PeopleSearch} from "./pages/PeopleSearch";
 import {PostList} from "./pages/PostList";
 import {Profile} from "./pages/Profile";
 import {FriendsList} from "./pages/FriendsList";
@@ -24,10 +23,8 @@ function App() {
 
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/registration' element={<Registration />}/>
-
                     <Route path='/profile' element={<Profile />}/>
 
-                    <Route path='/search' element={<PeopleSearch />}/>
                     <Route path='/posts' element={<PostList />}/>
                     <Route path='/friends' element={<FriendsList />}/>
                 </Routes>

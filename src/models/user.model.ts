@@ -3,6 +3,7 @@ export interface Profile {
     first_name: string;
     last_name: string;
     phone: string;
+    avatar?: string;
     university?: string;
     age?: number;
 }

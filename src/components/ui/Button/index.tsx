@@ -1,5 +1,5 @@
 import styles from './index.module.sass';
-import {ReactNode} from "react";
+import {MouseEvent, ReactNode} from "react";
 import cn from "classnames";
 export enum ButtonThemes {
     primary,
@@ -11,7 +11,7 @@ interface Props {
     children: ReactNode;
     type: 'submit' | 'button';
     theme: ButtonThemes;
-    onClick: () => void;
+    onClick: (e?: MouseEvent) => void;
     disabled: boolean;
     className: string;
 }
@@ -19,7 +19,7 @@ export const Button = (props: Partial<Props>) => {
     const {
         theme = ButtonThemes.primary,
         type = 'submit',
-        onClick = () => {},
+        onClick = e => {},
         disabled = false,
         children,
         className,
@@ -35,7 +35,7 @@ export const Button = (props: Partial<Props>) => {
                 [styles.btn_secondary]: theme === ButtonThemes.secondary,
                 [styles.btn_error]: theme === ButtonThemes.error,
             })}
-            onClick={onClick}
+            onClick={e => onClick(e)}
         >
             {children}
         </button>

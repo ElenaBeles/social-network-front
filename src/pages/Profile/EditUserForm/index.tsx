@@ -5,9 +5,11 @@ import {Button} from "components/ui/Button";
 
 import defaultAvatar from "assets/images/defaultAvatar.png";
 import styles from "./index.module.sass";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 
 export const EditUserForm = () => {
+    const navigate = useNavigate();
+
     const user = {
         firstName: 'Ivan',
         lastName: 'Ivanov',
@@ -28,6 +30,11 @@ export const EditUserForm = () => {
             university: user.university
         }
     });
+
+    const logout = () => {
+      localStorage.removeItem('token');
+      navigate('/');
+    };
 
     return (
         <section className={styles.container}>
@@ -54,6 +61,9 @@ export const EditUserForm = () => {
             >
                 Мои друзья
             </NavLink>
+            <Button onClick={logout}>
+                Выйти
+            </Button>
         </section>
     );
 }
