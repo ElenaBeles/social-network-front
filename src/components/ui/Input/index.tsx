@@ -3,7 +3,7 @@ import cn from "classnames";
 import {UseFormRegisterReturn} from "react-hook-form";
 
 interface Props {
-    value: string;
+    value?: string;
     register: UseFormRegisterReturn<any>;
     placeholder?: string;
     className?: string;

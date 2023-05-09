@@ -16,7 +16,7 @@ export const Header = ({className, ...rest}: Partial<Props>) => {
             </NavLink>
             <NavLink
                 className={styles.link}
-                to='/registartion'
+                to='/registration'
             >
                 Зарегистрироваться
             </NavLink>
