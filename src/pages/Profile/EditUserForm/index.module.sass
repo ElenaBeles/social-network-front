@@ -1,0 +1,30 @@
+@import "styles/mixins"
+
+.container
+  .user
+    display: flex
+    justify-content: space-between
+    margin-bottom: 40px
+
+    .form
+      min-width: 400px
+      display: flex
+      flex-direction: column
+      row-gap: 20px
+
+    .avatar
+      height: 200px
+      width: 200px
+      border-radius: 50%
+      object-fit: cover
+
+  .link
+    padding: 10px 20px
+    border-radius: 8px
+    border: 1px solid $c-blue
+    color: $c-blue
+    transition: 300ms
+
+    &:hover
+      background: $c-blue
+      color: white

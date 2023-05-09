@@ -3,7 +3,8 @@ import {ReactNode} from "react";
 import cn from "classnames";
 export enum ButtonThemes {
     primary,
-    secondary
+    secondary,
+    error
 }
 
 interface Props {
@@ -32,6 +33,7 @@ export const Button = (props: Partial<Props>) => {
             className={cn(styles.btn, className, {
                 [styles.btn_primary]: theme === ButtonThemes.primary,
                 [styles.btn_secondary]: theme === ButtonThemes.secondary,
+                [styles.btn_error]: theme === ButtonThemes.error,
             })}
             onClick={onClick}
         >
