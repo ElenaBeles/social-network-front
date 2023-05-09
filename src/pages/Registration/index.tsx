@@ -5,6 +5,8 @@ import {Button, ButtonThemes} from "components/ui/Button";
 import styles from "../Login/index.module.sass";
 
 interface RegistrationForm {
+    first_name: string;
+    last_name: string;
     email: string;
     password: string;
     phone: number;
@@ -17,6 +19,8 @@ export const Registration = () => {
         formState: {errors, isValid}
     } = useForm<RegistrationForm>({
         defaultValues: {
+            first_name: '',
+            last_name: '',
             email: '',
             password: '',
         }
@@ -32,6 +36,38 @@ export const Registration = () => {
                 className={styles.form}
                 onSubmit={handleSubmit(registration)}
             >
+                <div className={styles.form__control}>
+                    <Input
+                        placeholder='Имя'
+                        value=''
+                        register={register("first_name", {
+                            required: "Введите имя"
+                        })}
+                    />
+                    {
+                        errors.first_name && <span className={styles.form__control_error}>
+                        {
+                            errors.first_name.message
+                        }
+                    </span>
+                    }
+                </div>
+                <div className={styles.form__control}>
+                <Input
+                    placeholder='Фамилия'
+                    value=''
+                    register={register("last_name", {
+                        required: "Введите фамилию"
+                    })}
+                />
+                {
+                    errors.last_name && <span className={styles.form__control_error}>
+                        {
+                            errors.last_name.message
+                        }
+                    </span>
+                }
+            </div>
                 <div className={styles.form__control}>
                     <Input
                         placeholder='Email'
@@ -65,7 +101,7 @@ export const Registration = () => {
                 </div>
                 <div className={styles.form__control}>
                     <Input
-                        placeholder='Придуумайте пароль'
+                        placeholder='Придумайте пароль'
                         value=''
                         register={register("password", {
                             required: "Введите пароль"
