@@ -11,24 +11,27 @@ import {Profile} from "./pages/Profile";
 import {FriendsList} from "./pages/FriendsList";
 
 import './App.sass';
+import {Layout} from "./components/Layout";
 
 const queryClient = new QueryClient();
 
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <Routes>
-                <Route index element={<Main />}/>
+            <Layout>
+                <Routes>
+                    <Route index element={<Main />}/>
 
-                <Route path='/login' element={<Login/>}/>
-                <Route path='/registration' element={<Registration />}/>
+                    <Route path='/login' element={<Login/>}/>
+                    <Route path='/registration' element={<Registration />}/>
 
-                <Route path='/profile' element={<Profile />}/>
+                    <Route path='/profile' element={<Profile />}/>
 
-                <Route path='/search' element={<PeopleSearch />}/>
-                <Route path='/posts' element={<PostList />}/>
-                <Route path='/friends' element={<FriendsList />}/>
-            </Routes>
+                    <Route path='/search' element={<PeopleSearch />}/>
+                    <Route path='/posts' element={<PostList />}/>
+                    <Route path='/friends' element={<FriendsList />}/>
+                </Routes>
+            </Layout>
         </QueryClientProvider>
     );
 }

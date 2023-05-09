@@ -1,0 +1,25 @@
+@import "styles/mixins"
+
+.title
+  text-align: center
+
+.form
+  display: flex
+  flex-direction: column
+  gap: 40px
+  margin: 40px auto 0
+  width: 400px
+  padding: 20px
+  border: 1px solid $c-gray
+
+  &__control
+    display: flex
+    flex-direction: column
+
+    &_error
+      margin-top: 8px
+      color: red
+
+.link__registration
+  margin-top: 100px
+  width: 100%
