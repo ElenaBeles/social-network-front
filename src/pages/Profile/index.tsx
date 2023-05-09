@@ -1,6 +1,8 @@
-import styles from './index.module.sass';
 import {EditUserForm} from "./EditUserForm";
 import {PreviewProfile} from "./PreviewProfile";
+import {PostList} from "../PostList";
+
+import styles from './index.module.sass';
 
 export const Profile = () => {
     const isOtherUser = false;
@@ -12,10 +14,7 @@ export const Profile = () => {
                     isOtherUser ? <PreviewProfile/> : <EditUserForm/>
                 }
             </section>
-
-            <section>
-                Feed
-            </section>
+            <PostList className={styles.feed}/>
         </div>
     );
 }
