@@ -1,4 +1,4 @@
-import {Friend} from "../models/friend.interface";
+import {Friend} from 'models/friend.interface';
 
 export const FriendsMock: Friend[] = [
     {
@@ -8,11 +8,26 @@ export const FriendsMock: Friend[] = [
     },
     {
         id: 2,
-        first_name: 'Ivana',
+        first_name: 'Maria',
         last_name: 'Ivanova'
     },
     {
         id: 3,
+        first_name: 'Ivan123',
+        last_name: 'Ivanov'
+    },
+    {
+        id: 4,
+        first_name: 'Ivan123',
+        last_name: 'Ivanov'
+    },
+    {
+        id: 5,
+        first_name: 'Ivan123',
+        last_name: 'Ivanov'
+    },
+    {
+        id: 6,
         first_name: 'Ivan123',
         last_name: 'Ivanov'
     },

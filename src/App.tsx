@@ -1,16 +1,16 @@
 import React from 'react';
-import {Route, Routes} from "react-router-dom";
-import {QueryClient, QueryClientProvider} from "react-query";
+import {Route, Routes} from 'react-router-dom';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
-import {Login} from "./pages/Login";
-import {Main} from "./pages/Main";
-import {Registration} from "./pages/Registration";
-import {PostList} from "./pages/PostList";
-import {Profile} from "./pages/Profile";
-import {FriendsList} from "./pages/FriendsList";
+import {Login} from './pages/Login';
+import {Main} from './pages/Main';
+import {Registration} from './pages/Registration';
+import {PostList} from './pages/PostList';
+import {Profile} from './pages/Profile';
+import {FriendsList} from './pages/FriendsList';
 
 import './App.sass';
-import {Layout} from "./components/Layout";
+import {Layout} from './components/Layout';
 
 const queryClient = new QueryClient();
 

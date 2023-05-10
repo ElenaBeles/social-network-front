@@ -1,6 +1,7 @@
 import styles from './index.module.sass';
-import {MouseEvent, ReactNode} from "react";
-import cn from "classnames";
+import {MouseEvent, ReactNode} from 'react';
+import cn from 'classnames';
+
 export enum ButtonThemes {
     primary,
     secondary,

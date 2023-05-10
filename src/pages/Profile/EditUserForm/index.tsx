@@ -1,39 +1,41 @@
-import {useForm} from "react-hook-form";
+import {NavLink, useNavigate} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {useForm} from 'react-hook-form';
 
-import {Input} from "components/ui/Input";
-import {Button} from "components/ui/Button";
+import {IEditUserForm} from 'models/forms.interface';
+import {editUser, resetCurrentUser} from 'reducers/userSlice';
+import {Input} from 'components/ui/Input';
+import {Button} from 'components/ui/Button';
 
-import defaultAvatar from "assets/images/defaultAvatar.png";
-import styles from "./index.module.sass";
-import {NavLink, useNavigate} from "react-router-dom";
+import defaultAvatar from 'assets/images/defaultAvatar.png';
+import styles from './index.module.sass';
+
 
 export const EditUserForm = () => {
     const navigate = useNavigate();
-
-    const user = {
-        firstName: 'Ivan',
-        lastName: 'Ivanov',
-        avatar: defaultAvatar,
-        age: '18',
-        university: 'КФУ'
-    }
+    const user = useSelector((state: any) => state.userSlice);
+    const dispatch = useDispatch();
 
     const {
         register,
         handleSubmit,
         formState: {errors, isValid}
-    } = useForm({
+    } = useForm<Partial<IEditUserForm>>({
         defaultValues: {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            age: user.age,
-            university: user.university
+            first_name: user.first_name,
+            last_name: user.last_name,
+            age: user.age ?? '',
+            university: user.university ?? ''
         }
     });
 
     const logout = () => {
-      localStorage.removeItem('token');
-      navigate('/');
+        dispatch(resetCurrentUser());
+        navigate('/');
+    };
+
+    const edit = (v: Partial<IEditUserForm>) => {
+        dispatch(editUser(v));
     };
 
     return (
@@ -41,17 +43,17 @@ export const EditUserForm = () => {
             <section className={styles.user}>
                 <img
                     className={styles.avatar}
-                    src={user.avatar}
-                    alt="user_avatar"
+                    src={user.avatar ?? defaultAvatar}
+                    alt='user_avatar'
                 />
                 <form
                     className={styles.form}
-                    onSubmit={handleSubmit(v => console.log(v))}
+                    onSubmit={handleSubmit(v => edit(v))}
                 >
-                    <Input register={register('firstName')}/>
-                    <Input register={register('lastName')}/>
-                    <Input register={register('age')}/>
-                    <Input register={register('university')}/>
+                    <Input placeholder='Имя' register={register('first_name')}/>
+                    <Input placeholder='Фамилия' register={register('last_name')}/>
+                    <Input placeholder='Возраст' register={register('age')}/>
+                    <Input placeholder='Университет' register={register('university')}/>
                     <Button>Изменить данные</Button>
                 </form>
             </section>

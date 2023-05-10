@@ -1,7 +1,8 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode} from 'react';
 import cn from 'classnames';
 import styles from './index.module.sass';
-import {Header} from "../Header";
+import {Header} from '../Header';
+
 interface Props {
     children: ReactNode;
     className: string;

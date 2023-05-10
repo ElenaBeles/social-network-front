@@ -1,8 +1,9 @@
-import {useState} from "react";
-import {Button, ButtonThemes} from "components/ui/Button";
+import {useState} from 'react';
+import {Button, ButtonThemes} from 'components/ui/Button';
 
-import defaultAvatar from "assets/images/defaultAvatar.png";
+import defaultAvatar from 'assets/images/defaultAvatar.png';
 import styles from './index.module.sass';
+
 export const PreviewProfile = () => {
     const user = {
         firstName: 'Ivan',
@@ -26,7 +27,7 @@ export const PreviewProfile = () => {
         <section className={styles.container}>
             <div className={styles.info}>
                 <h1>{user.firstName} {user.lastName}</h1>
-                <img className={styles.avatar} src={user.avatar} alt="user_avatar"/>
+                <img className={styles.avatar} src={user.avatar} alt='user_avatar'/>
                 <p className={styles.field}>{user.age} лет</p>
                 <p className={styles.field}>{user.university}</p>
             </div>

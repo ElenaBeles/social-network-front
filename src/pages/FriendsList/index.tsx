@@ -1,23 +1,22 @@
-import {createSearchParams, useNavigate} from "react-router-dom";
+import {deleteFriend} from 'reducers/friendsSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {createSearchParams, useNavigate} from 'react-router-dom';
 
-import {FriendsMock} from "mocks/friends.mock";
+import {Friend} from 'models/friend.interface';
+import {Button, ButtonThemes} from 'components/ui/Button';
+
 import defaultAvatar from 'assets/images/defaultAvatar.png';
-import {Button, ButtonThemes} from "components/ui/Button";
-
 import styles from './index.module.sass';
 
 export const FriendsList = () => {
-    const data = FriendsMock;
+    const data = useSelector((state: any) => state.friendsSlice) as Friend[];
 
     const navigate = useNavigate();
-
-    const deleteFriend = (id: number) => {
-        console.log('Удалить')
-    };
+    const dispatch = useDispatch();
 
     const navigateToFriendPage = (id: number) => {
         navigate({
-            pathname: "/profile",
+            pathname: '/profile',
             search: `?${createSearchParams({
                 id: id.toString()
             })}`
@@ -38,22 +37,21 @@ export const FriendsList = () => {
                             <img
                                 className={styles.friend__avatar}
                                 src={friend.avatar ?? defaultAvatar}
-                                 alt="friend_avatar"
+                                alt='friend_avatar'
                             />
                             <div className={styles.friend__data}>
                                 <p>{friend.first_name} {friend.last_name}</p>
                                 <p>{friend.university}</p>
                             </div>
-
                             <Button
                                 onClick={e => {
-                                    deleteFriend(friend.id);
+                                    dispatch(deleteFriend(friend.id));
                                     e?.stopPropagation();
                                 }}
                                 theme={ButtonThemes.error}
                                 className={styles.friend__delete}
                             >
-                                Удалить из друзей
+                                Удалить
                             </Button>
                         </button>
                     )

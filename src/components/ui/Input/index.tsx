@@ -1,11 +1,12 @@
+import {UseFormRegisterReturn} from 'react-hook-form';
+import cn from 'classnames';
 import styles from './index.module.sass';
-import cn from "classnames";
-import {UseFormRegisterReturn} from "react-hook-form";
 
 interface Props {
     value?: string;
     register: UseFormRegisterReturn<any>;
     placeholder?: string;
+    type?: 'password' | 'text';
     className?: string;
 }
 
@@ -14,6 +15,7 @@ export const Input = (props: Props) => {
         placeholder,
         className,
         register,
+        type = 'text',
         ...rest
     } = props;
 
@@ -22,7 +24,7 @@ export const Input = (props: Props) => {
             <input
                 {...register}
                 placeholder={placeholder}
-                type="text"
+                type={type}
                 className={styles.control}
             />
         </label>

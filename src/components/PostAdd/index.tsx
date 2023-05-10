@@ -1,7 +1,9 @@
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {addPost} from 'reducers/postsSlice';
 
-import {Textarea} from "components/ui/Textarea";
-import {Button} from "components/ui/Button";
+import {Textarea} from 'components/ui/Textarea';
+import {Button} from 'components/ui/Button';
 
 import styles from './index.module.sass';
 
@@ -15,13 +17,14 @@ export const PostAdd = () => {
         text: '',
         img: null
     });
-    const uploadPostImage = (event: ChangeEvent<HTMLInputElement>) => {
-        const { files } = event.target;
 
+    const dispatch = useDispatch();
+
+    const uploadPostImage = (event: ChangeEvent<HTMLInputElement>) => {
+        const {files} = event.target;
         if (!files) {
             return {};
         }
-
         return postChange(prev => ({
             ...prev,
             img: files[0]
@@ -29,7 +32,7 @@ export const PostAdd = () => {
     };
 
     const publish = () => {
-        console.log('Опубликовать пост');
+        dispatch(addPost(post));
     };
 
     return (
@@ -45,7 +48,7 @@ export const PostAdd = () => {
             <div className={styles.controls}>
                 <label className={styles.controls__image}>
                     Добавить фото
-                    <input onChange={uploadPostImage} type="file"/>
+                    <input onChange={uploadPostImage} type='file'/>
                 </label>
                 <Button onClick={publish}>Опубликовать пост</Button>
             </div>
