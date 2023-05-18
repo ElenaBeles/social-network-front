@@ -1,31 +1,22 @@
-import {useDispatch} from 'react-redux';
-import {setCurrentUser} from 'reducers/userSlice';
-import {createSearchParams, useNavigate} from 'react-router-dom';
+import {useMutation} from "react-query";
+import {useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 
-import {USER_ID} from 'mocks/user.mock';
-import {Input} from 'components/ui/Input';
+import {registration} from "services/authAPI";
+import {RegistrationModel} from "models/auth.model";
+import {FormInput} from 'components/ui/Input/FormInput';
 import {Button, ButtonThemes} from 'components/ui/Button';
 
 import styles from '../Login/index.module.sass';
 
-interface RegistrationForm {
-    first_name: string;
-    last_name: string;
-    email: string;
-    password: string;
-    phone: number;
-}
-
 export const Registration = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const {
         register,
         handleSubmit,
         formState: {errors, isValid}
-    } = useForm<RegistrationForm>({
+    } = useForm<Partial<RegistrationModel>>({
         defaultValues: {
             first_name: '',
             last_name: '',
@@ -34,27 +25,25 @@ export const Registration = () => {
         }
     });
 
-    const registration = (data: any) => {
-        dispatch(setCurrentUser({...data}));
-        navigate({
-            pathname: '/profile',
-            search: `?${createSearchParams({
-                id: USER_ID
-            })}`
-        });
-    };
+    const registrationQuery =
+        useMutation((data: RegistrationModel) => registration(data));
 
     return (
         <section>
             <h1 className={styles.title}>Регистрация</h1>
             <form
                 className={styles.form}
-                onSubmit={handleSubmit(registration)}
+                onSubmit={handleSubmit(val => {
+                    registrationQuery.mutate(val as RegistrationModel, {
+                        onSuccess: data => {
+                            navigate('/login');
+                        }
+                    })
+                })}
             >
                 <div className={styles.form__control}>
-                    <Input
+                    <FormInput
                         placeholder='Имя'
-                        value=''
                         register={register('first_name', {
                             required: 'Введите имя'
                         })}
@@ -68,9 +57,8 @@ export const Registration = () => {
                     }
                 </div>
                 <div className={styles.form__control}>
-                    <Input
+                    <FormInput
                         placeholder='Фамилия'
-                        value=''
                         register={register('last_name', {
                             required: 'Введите фамилию'
                         })}
@@ -84,9 +72,8 @@ export const Registration = () => {
                 }
             </div>
                 <div className={styles.form__control}>
-                    <Input
+                    <FormInput
                         placeholder='Email'
-                        value=''
                         register={register('email', {
                             required: 'Введите email'
                         })}
@@ -100,7 +87,7 @@ export const Registration = () => {
                     }
                 </div>
                 <div className={styles.form__control}>
-                    <Input
+                    <FormInput
                         placeholder='Номер телефона'
                         register={register('phone', {
                             required: 'Введите телефон',
@@ -115,9 +102,8 @@ export const Registration = () => {
                     }
                 </div>
                 <div className={styles.form__control}>
-                    <Input
+                    <FormInput
                         placeholder='Придумайте пароль'
-                        value=''
                         type='password'
                         register={register('password', {
                             required: 'Введите пароль'

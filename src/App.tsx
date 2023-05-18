@@ -19,6 +19,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
             <Layout>
                 <Routes>
+                    <Route ></Route>
                     <Route index element={<Main />}/>
 
                     <Route path='/login' element={<Login/>}/>
@@ -26,7 +27,7 @@ function App() {
                     <Route path='/profile' element={<Profile />}/>
 
                     <Route path='/posts' element={<PostList />}/>
-                    <Route path='/friends' element={<FriendsList />}/>
+                    <Route path='/search' element={<FriendsList />}/>
                 </Routes>
             </Layout>
         </QueryClientProvider>

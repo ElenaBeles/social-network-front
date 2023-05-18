@@ -1,15 +1,16 @@
 import {deleteFriend} from 'reducers/friendsSlice';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import {useQuery} from "react-query";
 import {createSearchParams, useNavigate} from 'react-router-dom';
 
-import {Friend} from 'models/friend.interface';
+import {getAllUsers} from "services/userAPI";
 import {Button, ButtonThemes} from 'components/ui/Button';
 
 import defaultAvatar from 'assets/images/defaultAvatar.png';
 import styles from './index.module.sass';
 
 export const FriendsList = () => {
-    const data = useSelector((state: any) => state.friendsSlice) as Friend[];
+    const { data } = useQuery('users', getAllUsers);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -25,10 +26,10 @@ export const FriendsList = () => {
 
     return (
         <section className={styles.content}>
-            <h1>Мои друзья</h1>
+            <h1>Пользователи</h1>
             <div className={styles.friends}>
                 {
-                    data.map(friend =>
+                    data?.map(friend =>
                         <button
                             onClick={() => navigateToFriendPage(friend.id)}
                             className={styles.friend__wrapper}
@@ -36,12 +37,12 @@ export const FriendsList = () => {
                         >
                             <img
                                 className={styles.friend__avatar}
-                                src={friend.avatar ?? defaultAvatar}
+                                src={defaultAvatar}
                                 alt='friend_avatar'
                             />
                             <div className={styles.friend__data}>
                                 <p>{friend.first_name} {friend.last_name}</p>
-                                <p>{friend.university}</p>
+                                <p className={styles.friend__phone}>{friend.phone}</p>
                             </div>
                             <Button
                                 onClick={e => {

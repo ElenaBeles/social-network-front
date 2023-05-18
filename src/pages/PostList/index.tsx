@@ -1,12 +1,13 @@
+import {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import cn from 'classnames';
 
 import {Post} from 'models/post.interface';
+import {Alert} from "components/ui/Alert";
 import {PostAdd} from 'components/PostAdd';
 import {PostPreview} from 'components/Post';
 
 import styles from './index.module.sass';
-import {useEffect, useState} from 'react';
 
 interface Props {
     className?: string;
@@ -32,7 +33,8 @@ export const PostList = ({className, ...rest}: Props) => {
 
     return (
         <section {...rest} className={cn(styles.content, className)}>
-            <PostAdd/>
+            <Alert />
+            <PostAdd />
             <hr className={styles.delimiter}/>
             {
                 sortedData?.map(post =>

@@ -1,20 +1,20 @@
 import {UseFormRegisterReturn} from 'react-hook-form';
 import cn from 'classnames';
-import styles from './index.module.sass';
+import styles from '../index.module.sass';
 
 interface Props {
-    value?: string;
+    register?: UseFormRegisterReturn<any>;
     placeholder?: string;
     disabled?: boolean;
     type?: 'password' | 'text';
     className?: string;
 }
 
-export const Input = (props: Props) => {
+export const FormInput = (props: Props) => {
     const {
-        value,
         placeholder,
         className,
+        register,
         disabled = false,
         type = 'text',
         ...rest
@@ -23,7 +23,7 @@ export const Input = (props: Props) => {
     return (
         <label {...rest} className={cn(styles.container, disabled && styles.container_disabled, className)}>
             <input
-                value={value}
+                {...register}
                 type={type}
                 disabled={disabled}
                 placeholder={placeholder}

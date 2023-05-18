@@ -2,18 +2,27 @@ import {NavLink, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {useForm} from 'react-hook-form';
 
+import {Profile} from "models/user.model";
 import {IEditUserForm} from 'models/forms.interface';
 import {editUser, resetCurrentUser} from 'reducers/userSlice';
-import {Input} from 'components/ui/Input';
+import {FormInput} from 'components/ui/Input/FormInput';
 import {Button} from 'components/ui/Button';
 
 import defaultAvatar from 'assets/images/defaultAvatar.png';
 import styles from './index.module.sass';
+import {updateProfile} from "../../../services/profileAPI";
+import {useMutation} from "react-query";
+import {removeEmpty} from "../../../utils/removeEmpty";
+import {Input} from "../../../components/ui/Input";
 
+interface Props {
+    profile: Profile;
+    className?: string;
+}
 
-export const EditUserForm = () => {
+export const EditUserForm = ({profile, className}: Props) => {
+    const { user} = profile;
     const navigate = useNavigate();
-    const user = useSelector((state: any) => state.userSlice);
     const dispatch = useDispatch();
 
     const {
@@ -22,20 +31,24 @@ export const EditUserForm = () => {
         formState: {errors, isValid}
     } = useForm<Partial<IEditUserForm>>({
         defaultValues: {
-            first_name: user.first_name,
-            last_name: user.last_name,
-            age: user.age ?? '',
-            university: user.university ?? ''
+            age: profile.age?.toString() ?? '',
+            university: profile.university ?? ''
         }
     });
 
     const logout = () => {
+        localStorage.removeItem('id');
         dispatch(resetCurrentUser());
         navigate('/');
     };
 
-    const edit = (v: Partial<IEditUserForm>) => {
-        dispatch(editUser(v));
+    const editProfileQuery = useMutation('editProfile', updateProfile);
+
+    const edit = (form: Partial<IEditUserForm>) => {
+        editProfileQuery.mutate({
+            data: removeEmpty(form) ?? {},
+            userId: profile.userId!
+    });
     };
 
     return (
@@ -43,26 +56,34 @@ export const EditUserForm = () => {
             <section className={styles.user}>
                 <img
                     className={styles.avatar}
-                    src={user.avatar ?? defaultAvatar}
+                    src={defaultAvatar}
                     alt='user_avatar'
                 />
                 <form
                     className={styles.form}
                     onSubmit={handleSubmit(v => edit(v))}
                 >
-                    <Input placeholder='Имя' register={register('first_name')}/>
-                    <Input placeholder='Фамилия' register={register('last_name')}/>
-                    <Input placeholder='Возраст' register={register('age')}/>
-                    <Input placeholder='Университет' register={register('university')}/>
+                    <Input
+                        disabled
+                        value={user.first_name}
+                        placeholder='Имя'
+                    />
+                    <Input
+                        disabled
+                        value={user.last_name}
+                        placeholder='Фамилия'
+                    />
+                    <FormInput
+                        placeholder='Возраст'
+                        register={register('age')}
+                    />
+                    <FormInput
+                        placeholder='Университет'
+                        register={register('university')}
+                    />
                     <Button>Изменить данные</Button>
                 </form>
             </section>
-            <NavLink
-                className={styles.link}
-                to='/friends'
-            >
-                Мои друзья
-            </NavLink>
             <Button onClick={logout}>
                 Выйти
             </Button>

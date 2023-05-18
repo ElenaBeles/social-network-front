@@ -1,19 +1,19 @@
 import {useState} from 'react';
-import {Button, ButtonThemes} from 'components/ui/Button';
+import cn from "classnames";
 
+import {Profile} from "models/user.model";
 import defaultAvatar from 'assets/images/defaultAvatar.png';
 import styles from './index.module.sass';
 
-export const PreviewProfile = () => {
-    const user = {
-        firstName: 'Ivan',
-        lastName: 'Ivanov',
-        avatar: defaultAvatar,
-        age: '18',
-        university: 'КФУ'
-    }
+interface Props {
+    profile: Profile;
+    className?: string;
+}
 
+export const PreviewProfile = ({profile, className}: Props) => {
     const [isFriend, changeIsFriend] = useState(false);
+
+    const { user } = profile;
 
     const addFriend = () => {
         changeIsFriend(true);
@@ -24,32 +24,14 @@ export const PreviewProfile = () => {
     };
 
     return (
-        <section className={styles.container}>
-            <div className={styles.info}>
-                <h1>{user.firstName} {user.lastName}</h1>
-                <img className={styles.avatar} src={user.avatar} alt='user_avatar'/>
-                <p className={styles.field}>{user.age} лет</p>
-                <p className={styles.field}>{user.university}</p>
-            </div>
-
-            <div className={styles.controls}>
-                {
-                    isFriend ?
-                        <Button
-                            onClick={deleteFriend}
-                            theme={ButtonThemes.error}
-                        >
-                            Удалить из друзей
-                        </Button>
-                        :
-
-                        <Button
-                            onClick={addFriend}
-                        >
-                            Добавить в друзья
-                        </Button>
-                }
-            </div>
-        </section>
+        <div className={cn(styles.info, className)}>
+            <h1>{user.first_name} {user.last_name}</h1>
+            <img className={styles.avatar} src={defaultAvatar} alt='user_avatar'/>
+            {
+                profile.age &&
+                <p className={styles.field}>{profile.age} лет</p>
+            }
+            <p className={styles.field}>{profile.university}</p>
+        </div>
     );
 }

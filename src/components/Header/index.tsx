@@ -14,7 +14,7 @@ export const Header = ({className, ...rest}: Partial<Props>) => {
     return (
         <header {...rest} className={cn(styles.container, className)}>
             {
-                !user?.id &&
+                !user?.userId &&
                 <>
                     <NavLink
                         className={styles.link}
@@ -31,11 +31,11 @@ export const Header = ({className, ...rest}: Partial<Props>) => {
                 </>
             }
             {
-                user?.id &&
+                user?.userId &&
                 <>
                     <NavLink
                         className={styles.link}
-                        to={`/profile?id=${user.id}`}
+                        to={`/profile?id=${user.userId}`}
                     >
                         Профиль
                     </NavLink>
@@ -47,9 +47,9 @@ export const Header = ({className, ...rest}: Partial<Props>) => {
                     </NavLink>
                     <NavLink
                         className={styles.link}
-                        to='/friends'
+                        to='/search'
                     >
-                        Мои друзья
+                        Пользователи
                     </NavLink>
                 </>
             }

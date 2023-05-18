@@ -48,7 +48,7 @@ export const PostAdd = () => {
             <div className={styles.controls}>
                 <label className={styles.controls__image}>
                     Добавить фото
-                    <input onChange={uploadPostImage} type='file'/>
+                    <input onChange={uploadPostImage} type='file' />
                 </label>
                 <Button onClick={publish}>Опубликовать пост</Button>
             </div>

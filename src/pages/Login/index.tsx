@@ -1,49 +1,42 @@
 import {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {createSearchParams, useNavigate} from 'react-router-dom';
+import {useMutation} from "react-query";
+import {useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 
-import {isEqualObject} from 'utils/isEqualObject';
-import {USER_ID} from 'mocks/user.mock';
+import {login} from "services/authAPI";
+import {AuthModel} from "models/auth.model";
 import {Button, ButtonThemes} from 'components/ui/Button';
-import {Input} from 'components/ui/Input';
+import {FormInput} from 'components/ui/Input/FormInput';
 
 import styles from './index.module.sass';
 
-interface LoginForm {
-    password: string;
-    email: string;
-}
-
 export const Login = () => {
     const [hasAuthError, changeHasAuthError] = useState(false);
+
     const navigate = useNavigate();
-    const user = useSelector((state: any) => state.userSlice);
 
     const {
         register,
         handleSubmit,
         formState: {errors, isValid}
-    } = useForm<LoginForm>({
+    } = useForm<AuthModel>({
         defaultValues: {
             email: '',
             password: '',
         }
     });
 
-    const auth = (data: any) => {
-        const userAuthData = {
-            phone: user.phone,
-            password: user.password
-        };
-        if (!isEqualObject(userAuthData, data)) {
-            return changeHasAuthError(true);
-        }
-        navigate({
-            pathname: '/profile',
-            search: `?${createSearchParams({
-                id: USER_ID
-            })}`
+    const loginQuery = useMutation((data: AuthModel) => login(data));
+
+    const auth = (data: AuthModel) => {
+        loginQuery.mutate(data, {
+            onSuccess: req => {
+                localStorage.setItem('id', req?.data?.userId ?? '');
+                navigate('/profile');
+            },
+            onError: () => {
+                changeHasAuthError(true);
+            }
         });
     };
 
@@ -55,9 +48,8 @@ export const Login = () => {
                 onSubmit={handleSubmit(auth)}
             >
                 <div className={styles.form__control}>
-                    <Input
+                    <FormInput
                         placeholder='Email'
-                        value=''
                         register={register('email', {
                             required: 'Введите email'
                         })}
@@ -67,9 +59,8 @@ export const Login = () => {
                     </span>}
                 </div>
                 <div className={styles.form__control}>
-                    <Input
+                    <FormInput
                         placeholder='Пароль'
-                        value=''
                         type='password'
                         register={register('password', {
                             required: 'Введите пароль'
