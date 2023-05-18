@@ -1,19 +1,18 @@
-import {NavLink, useNavigate} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {useMutation} from "react-query";
 import {useForm} from 'react-hook-form';
 
+import {updateProfile} from "services/profileAPI";
+import {removeEmpty} from "utils/removeEmpty";
+import {resetCurrentUser} from 'reducers/userSlice';
 import {Profile} from "models/user.model";
 import {IEditUserForm} from 'models/forms.interface';
-import {editUser, resetCurrentUser} from 'reducers/userSlice';
-import {FormInput} from 'components/ui/Input/FormInput';
+import {Input} from 'components/ui/Input';
 import {Button} from 'components/ui/Button';
 
 import defaultAvatar from 'assets/images/defaultAvatar.png';
 import styles from './index.module.sass';
-import {updateProfile} from "../../../services/profileAPI";
-import {useMutation} from "react-query";
-import {removeEmpty} from "../../../utils/removeEmpty";
-import {Input} from "../../../components/ui/Input";
 
 interface Props {
     profile: Profile;
@@ -26,7 +25,9 @@ export const EditUserForm = ({profile, className}: Props) => {
     const dispatch = useDispatch();
 
     const {
-        register,
+        control,
+        getValues,
+        setValue,
         handleSubmit,
         formState: {errors, isValid}
     } = useForm<Partial<IEditUserForm>>({
@@ -48,7 +49,7 @@ export const EditUserForm = ({profile, className}: Props) => {
         editProfileQuery.mutate({
             data: removeEmpty(form) ?? {},
             userId: profile.userId!
-    });
+        });
     };
 
     return (
@@ -67,19 +68,23 @@ export const EditUserForm = ({profile, className}: Props) => {
                         disabled
                         value={user.first_name}
                         placeholder='Имя'
+                        onChange={v => v}
                     />
                     <Input
                         disabled
                         value={user.last_name}
                         placeholder='Фамилия'
+                        onChange={v => v}
                     />
-                    <FormInput
+                    <Input
+                        value={getValues('age')}
+                        onChange={v => setValue('age', v)}
                         placeholder='Возраст'
-                        register={register('age')}
                     />
-                    <FormInput
+                    <Input
+                        value={getValues('university')}
+                        onChange={v => setValue('university', v)}
                         placeholder='Университет'
-                        register={register('university')}
                     />
                     <Button>Изменить данные</Button>
                 </form>

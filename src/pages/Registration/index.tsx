@@ -1,11 +1,13 @@
 import {useMutation} from "react-query";
+import React from "react";
 import {useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 
 import {registration} from "services/authAPI";
 import {RegistrationModel} from "models/auth.model";
-import {FormInput} from 'components/ui/Input/FormInput';
+import {Input} from 'components/ui/Input';
 import {Button, ButtonThemes} from 'components/ui/Button';
+import {MaskedInput} from "components/ui/Input/MaskedInput";
 
 import styles from '../Login/index.module.sass';
 
@@ -13,6 +15,8 @@ export const Registration = () => {
     const navigate = useNavigate();
 
     const {
+        setValue,
+        getValues,
         register,
         handleSubmit,
         formState: {errors, isValid}
@@ -42,11 +46,9 @@ export const Registration = () => {
                 })}
             >
                 <div className={styles.form__control}>
-                    <FormInput
+                    <Input
+                        onChange={v => setValue('first_name', v)}
                         placeholder='Имя'
-                        register={register('first_name', {
-                            required: 'Введите имя'
-                        })}
                     />
                     {
                         errors.first_name && <span className={styles.form__control_error}>
@@ -57,11 +59,9 @@ export const Registration = () => {
                     }
                 </div>
                 <div className={styles.form__control}>
-                    <FormInput
+                    <Input
+                        onChange={v => setValue('last_name', v)}
                         placeholder='Фамилия'
-                        register={register('last_name', {
-                            required: 'Введите фамилию'
-                        })}
                     />
                 {
                     errors.last_name && <span className={styles.form__control_error}>
@@ -72,11 +72,9 @@ export const Registration = () => {
                 }
             </div>
                 <div className={styles.form__control}>
-                    <FormInput
+                    <Input
+                        onChange={v => setValue('email', v)}
                         placeholder='Email'
-                        register={register('email', {
-                            required: 'Введите email'
-                        })}
                     />
                     {
                         errors.email && <span className={styles.form__control_error}>
@@ -87,27 +85,25 @@ export const Registration = () => {
                     }
                 </div>
                 <div className={styles.form__control}>
-                    <FormInput
+                    <MaskedInput
+                        onChange={v => setValue('phone', v)}
                         placeholder='Номер телефона'
-                        register={register('phone', {
-                            required: 'Введите телефон',
-                            pattern: /^8((\d{10})|(\s\(\d{3}\)\s\d{3}\s\d{2}\s\d{2}))/
-                        })}
+                        maskOptions={{
+                            mask: '+{7} (000) 000-00-00'
+                        }}
                     />
                     {
                         errors.phone &&
                         <span className={styles.form__control_error}>
-                            Номер начинается с 89 и содержит 11 цифр
+                            Поле обязательно для заполнения
                         </span>
                     }
                 </div>
                 <div className={styles.form__control}>
-                    <FormInput
+                    <Input
+                        onChange={v => setValue('password', v)}
                         placeholder='Придумайте пароль'
                         type='password'
-                        register={register('password', {
-                            required: 'Введите пароль'
-                        })}
                     />
                     {
                         errors.password && <span className={styles.form__control_error}>
@@ -117,18 +113,16 @@ export const Registration = () => {
                     </span>
                     }
                 </div>
-
-                <Button
-                    disabled={!isValid}>
-                    Войти
+                <Button>
+                    Зарегистрироваться
                 </Button>
             </form>
-
             <Button
                 className={styles.link__registration}
+                onClick={() => navigate('/registration')}
                 theme={ButtonThemes.secondary}
             >
-                Зарегистрироваться
+                Войти
             </Button>
         </section>
     );

@@ -1,12 +1,12 @@
 import {useState} from 'react';
 import {useMutation} from "react-query";
-import {useNavigate} from 'react-router-dom';
+import {createSearchParams, useNavigate} from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 
 import {login} from "services/authAPI";
 import {AuthModel} from "models/auth.model";
 import {Button, ButtonThemes} from 'components/ui/Button';
-import {FormInput} from 'components/ui/Input/FormInput';
+import {Input} from 'components/ui/Input';
 
 import styles from './index.module.sass';
 
@@ -16,7 +16,7 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const {
-        register,
+        setValue,
         handleSubmit,
         formState: {errors, isValid}
     } = useForm<AuthModel>({
@@ -31,8 +31,17 @@ export const Login = () => {
     const auth = (data: AuthModel) => {
         loginQuery.mutate(data, {
             onSuccess: req => {
-                localStorage.setItem('id', req?.data?.userId ?? '');
-                navigate('/profile');
+                const id: string = req?.data?.userId;
+                if(!id) {
+                    return;
+                }
+                localStorage.setItem('id', id);
+                navigate({
+                    pathname: '/profile',
+                    search: `?${createSearchParams({
+                        id
+                    })}`
+                });
             },
             onError: () => {
                 changeHasAuthError(true);
@@ -43,35 +52,29 @@ export const Login = () => {
     return (
         <section>
             <h1 className={styles.title}>Вход</h1>
-            <form
-                className={styles.form}
-                onSubmit={handleSubmit(auth)}
-            >
+            <form className={styles.form}>
                 <div className={styles.form__control}>
-                    <FormInput
+                    <Input
+                        onChange={v => setValue('email', v)}
                         placeholder='Email'
-                        register={register('email', {
-                            required: 'Введите email'
-                        })}
                     />
                     {errors.email && <span className={styles.form__control_error}>
                         {errors.email.message}
                     </span>}
                 </div>
                 <div className={styles.form__control}>
-                    <FormInput
+                    <Input
+                        onChange={v => setValue('password', v)}
                         placeholder='Пароль'
                         type='password'
-                        register={register('password', {
-                            required: 'Введите пароль'
-                        })}
                     />
-                    {errors.password && <span className={styles.form__control_error}>
+                    {
+                        errors.password && <span className={styles.form__control_error}>
                         {errors.password.message}
-                    </span>}
+                    </span>
+                    }
                 </div>
-                <Button
-                    disabled={!isValid}>
+                <Button type='submit' disabled={!isValid} onClick={handleSubmit(auth)}>
                     Войти
                 </Button>
                 {

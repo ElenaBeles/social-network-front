@@ -46,10 +46,13 @@ export const PostAdd = () => {
                 placeholder='Напишите что-нибудь'
             />
             <div className={styles.controls}>
-                <label className={styles.controls__image}>
-                    Добавить фото
-                    <input onChange={uploadPostImage} type='file' />
-                </label>
+                {
+                    false &&
+                    <label className={styles.controls__image}>
+                        Добавить фото
+                        <input onChange={uploadPostImage} type='file'/>
+                    </label>
+                }
                 <Button onClick={publish}>Опубликовать пост</Button>
             </div>
         </section>
